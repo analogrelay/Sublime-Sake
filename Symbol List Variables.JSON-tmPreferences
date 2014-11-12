@@ -1,0 +1,9 @@
+// [PackageDev] target_format: plist, ext: tmPreferences
+{
+	"name": "Symbol List Varaibles",
+	"scope": "entity.name.variable.shade",
+	"settings": {
+		"showInSymbolList": 1,
+		"symbolTransformation": "s/^(.*)$/var \\1/g"
+	}
+}

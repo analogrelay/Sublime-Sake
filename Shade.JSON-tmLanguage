@@ -1,0 +1,229 @@
+// [PackageDev] target_format: plist, ext: tmLanguage
+{
+    "name": "Shade",
+    "scopeName": "source.shade",
+    "fileTypes": ["shade"],
+    "patterns": [
+        {
+            "begin": "^(var|default)[\\t ]+([^\\t ]+)[\\t ]*=",
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.control.shade"
+                },
+                "2": {
+                    "name": "entity.name.variable.shade"
+                }
+            },
+            "patterns": [
+                {"include": "#interpolatedstrings"}
+            ],
+            "end": "$"
+        },
+        {
+            "match": "^(use)[\\t ]+(namespace)[\\t ]*=[\\t ]*(.+)[\\t ]*$",
+            "captures": {
+                "1": {
+                    "name": "keyword.control.shade"
+                },
+                "2": {
+                    "name": "keyword.control.shade"
+                },
+                "3": {
+                    "name": "meta.namespace.shade"
+                }
+            }
+        },
+        {
+            "match": "^(use)[\\t ]+(assembly)[\\t ]*=[\\t ]*(.+)[\\t ]*$",
+            "captures": {
+                "1": {
+                    "name": "keyword.control.shade"
+                },
+                "2": {
+                    "name": "keyword.control.shade"
+                },
+                "3": {
+                    "name": "meta.assembly.shade"
+                }
+            }
+        },
+        {
+            "match": "^(use)[\\t ]+(import)[\\t ]*=[\\t ]*(.+)[\\t ]*$",
+            "captures": {
+                "1": {
+                    "name": "keyword.control.shade"
+                },
+                "2": {
+                    "name": "keyword.control.shade"
+                },
+                "3": {
+                    "name": "meta.namespace.shade"
+                }
+            }
+        },
+        {
+            "name": "keyword.control.shade",
+            "match": "\\b(functions|for|each)\\b"
+        },
+        {
+            "name": "meta.function.shade",
+            "begin": "^(\\#[^\\t ]+)",
+            "beginCaptures": {
+                "1": {
+                    "name": "entity.name.function.shade"
+                }
+            },
+            "patterns": [
+                { "include": "#depsandvars" },
+                { "include": "#interpolatedstrings" }
+            ],
+            "end": "$\\n?"
+        },
+        {
+            "name": "meta.macro.shade",
+            "begin": "^(macro)[\\t ]*name=['\"]([^\\t ]+)['\"]",
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.control.shade"
+                },
+                "2": {
+                    "name": "entity.name.macro.shade"
+                }
+            },
+            "patterns": [
+                { "include": "#depsandvars" },
+                { "include": "#interpolatedstrings" }
+            ],
+            "end": "\\n?$"
+        },
+        {
+            "name": "meta.command.shade",
+            "begin": "^[\\t ]*([_A-Za-z][_A-Za-z0-9\\-]*)",
+            "beginCaptures": {
+                "1": {
+                    "name": "entity.name.function.invoke"
+                }
+            },
+            "patterns": [
+                { "include": "#depsandvars" },
+                { "include": "#interpolatedstrings" }
+            ],
+            "end": "$\\n?"
+        },
+        {
+            "name": "section.embedded.source.shade",
+            "begin": "^[\\t ]*(\\-)",
+            "beginCaptures": {
+                "1": { "name": "section.embedded.begin.shade" },
+                "1": { "name": "punctuation.section.embedded.begin.shade" }
+            },
+            "patterns": [
+                {"include": "#csharp"}
+            ],
+            "end": "$\\n?"
+        },
+        {
+            "name": "section.embedded.source.shade",
+            "begin": "(@?([a-zA-Z0-9]+)?)(\\s[a-zA-Z0-9]+)?(\n|\r)?(\\{)",
+            "beginCaptures": {
+                "0": { "name": "section.embedded.begin.shade"},
+                "0": { "name": "punctuation.section.embedded.begin.shade" },
+                "1": { "name": "keyword.control.shade"}
+            },
+            "patterns": [
+                {
+                    "name": "section.embedded.source.cshtml",
+                    "begin": "(@?([a-zA-Z0-9]+)?)(\\s[a-zA-Z0-9]+)?(\n|\r)?(\\{)",
+                    "beginCaptures": {
+                        "0": { "name": "section.embedded.begin.shade"},
+                        "0": { "name": "punctuation.section.embedded.begin.shade" },
+                        "1": { "name": "keyword.control.shade"}
+                    },
+                    "patterns": [
+                        { "include": "#csharp" }
+                    ],
+                    "end": "\\}",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.section.embedded.begin.shade" }
+                    }
+                },
+                {"include": "#csharp"}
+            ],
+            "end": "\\}",
+            "endCaptures": {
+                "0": { "name": "punctuation.section.embedded.begin.shade" }
+            },
+            "comments": "Simple multi-line code section"
+        },
+        {
+            "begin": "(@[a-zA-Z0-9]+)(\\s?)",
+            "captures": {
+                "0": { "name": "section.embedded.begin.shade" },
+                "1": { "name": "keyword.control.shade"}
+            },
+            "patterns": [
+                {
+                    "match": "(([a-zA-Z0-9]+)(\\.)?)+?",
+                    "captures": {
+                        "2": { "name": "entity.name.tag.source.shade" },
+                        "3": { "name": "punctuation.separator.namespace.source.shade"}
+                    }
+                },
+                { "include": "#csharp" }
+            ],
+            "end": "(\\n|\\s)",
+            "comments": "Covers single line Razor tags"
+        }
+    ],
+    "repository": {
+        "csharp": {
+            "patterns": [
+                { "include": "source.cs" },
+                { "include": "#interpolatedstrings" }
+            ]
+        },
+        "interpolatedstrings": {
+            "patterns": [
+                {
+                    "name": "string.interpolated.shade",
+                    "begin": "\\$\\{",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.string.begin.shade"
+                        }
+                    },
+                    "patterns": [
+                        {"include": "source.cs"}
+                    ],
+                    "end": "\\}",
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.string.end.shade"
+                        }
+                    }
+                }
+            ]
+        },
+        "depsandvars": {
+            "patterns": [
+                {
+                    "name": "storage.modifier.csharp",
+                    "match": "(\\.[_A-Za-z][_A-Za-z0-9]*)"
+                },
+                {
+                    "begin": "([_A-Za-z][_A-Za-z0-9]*)\\=",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "variable.other.shade"
+                        }
+                    },
+                    "patterns": [
+                        {"include":"#interpolatedstrings"}
+                    ],
+                    "end": "$|[\\t ]+"
+                }
+            ]
+        }
+    },
+    "uuid": "4f902f1e-9ac6-497d-a110-6d450bfd5b0b"
+}

@@ -1,0 +1,9 @@
+// [PackageDev] target_format: plist, ext: tmPreferences
+{
+    "name": "Symbol List Macros", 
+    "scope": "entity.name.macro.shade",
+    "settings": {
+        "symbolTransformation": "s/^(.*)$/macro \\1/g", 
+        "showInSymbolList": 1
+    }
+}
